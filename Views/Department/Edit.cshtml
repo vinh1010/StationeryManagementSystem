@@ -1,0 +1,47 @@
+﻿@model StationeryManagementSystem.Models.ViewModels.DepartmentsViewModel
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<section class="content" style="padding-top: 20px">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Edit Department</h3>
+                    </div>
+
+                    <form asp-action="Edit" asp-controller="Department" method="POST">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1"> Id Department</label>
+                                <input type="text" asp-for="Iddepartment" class="form-control" id="exampleInputEmail1" readonly>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="exampleInputEmail1"> Name Department</label>
+                                <input type="text" asp-for="NameDepartment" class="form-control" id="exampleInputEmail1" placeholder="Enter name department">
+                                <span asp-validation-for="NameDepartment" class="text-danger"></span>
+                                <b class="text-danger">@ViewBag.checkName</b>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Status</label>
+                                <br>
+                                <input type="radio" asp-for="Status" value="1" checked>Show
+                                <input type="radio" asp-for="Status" value="0">Hidden
+                            </div>
+                        </div>
+
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+
+                            <a asp-controller="Department" asp-action="Index" class="btn btn-primary float-right">Go to list</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

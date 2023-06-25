@@ -1,0 +1,96 @@
+﻿@model StationeryManagementSystem.Models.Employees
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "Detail";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Profile</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card card-primary card-outline">
+                    <div class="card-body box-profile">
+                        <div class="text-center">
+                            <img class="profile-user-img img-fluid img-circle" src="https://cdn-icons-png.flaticon.com/512/219/219983.png" alt="User profile picture">
+                        </div>
+                        <h3 class="profile-username text-center">@Model.NameEmployee</h3>
+                        <br>
+                        <ul class="list-group list-group-unbordered mb-3">
+                            <li class="list-group-item">
+                                <b>Department</b> <p class="float-right">@Model.IddepartmentNavigation.NameDepartment</p>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Position</b> <p class="float-right">@Model.IdroleNavigation.RoleName</p>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Status</b> @if (Model.Status == 1)
+                                {
+                                    <p class="float-right">
+                                        Active
+                                    </p>
+                                }
+                                else
+                                {
+                                    <p class="float-right">
+                                        Lock
+                                    </p>
+                                }
+
+                            </li>
+
+                        </ul>
+                        <a asp-action="Index" asp-controller="Employee" class="btn btn-primary btn-block"><b>Go to list</b></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">About Me</h3>
+                    </div>
+
+                    <div class="card-body">
+                        <strong><i class="fa fa-envelope" aria-hidden="true"></i> Email id</strong>
+                        <p class="text-muted">
+                            @Model.EmailId
+                        </p>
+                        <hr>
+                        <strong><i class="fas fa-map-marker-alt mr-1"></i> Location</strong>
+                        <p class="text-muted">@Model.Adress</p>
+                        <hr>
+                        <strong><i class="fa fa-birthday-cake" aria-hidden="true"></i> BirthDay</strong>
+                        <p class="text-muted">
+                            @String.Format("{0:yyyy/MM/dd}", Model.BirthDay)
+                        </p>
+                        <hr>
+                        <strong><i class="fa fa-mars-stroke" aria-hidden="true"></i> Sex</strong>
+                        @if (Model.Sex == 1)
+                        {
+                            <p class="text-muted">Male</p>
+                        }
+                        else
+                        {
+                            <p class="text-muted">Female</p>
+                        }
+                        @if (@HttpContextAccessor.HttpContext.Session.GetInt32("roleId") == 1 || @HttpContextAccessor.HttpContext.Session.GetInt32("roleId") == 2) { 
+                            <a asp-action="ChangePassword" asp-controller="Employee" asp-route-id="@Model.Idemployee" class="btn btn-primary btn-block"><b>Change account password</b></a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

@@ -1,0 +1,255 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@model X.PagedList.IPagedList<StationeryManagementSystem.Models.RequestStationery>
+@using X.PagedList.Mvc.Core;
+
+@if (TempData["LoginSuccess"] != null)
+{
+    @section Scripts{
+        <script>
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Login in success Welcome: @HttpContextAccessor.HttpContext.Session.GetString("userName")',
+                showConfirmButton: false,
+                timer: 1500
+            })
+        </script>
+    }
+}
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">Dashboard</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Dashboard</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box">
+                    <span class="info-box-icon bg-info elevation-1"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Day: @ViewBag.day</span>
+                        <span class="info-box-number">
+                            $@ViewBag.costDay
+                        </span>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box mb-3">
+                    <span class="info-box-icon bg-danger elevation-1"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Month: @ViewBag.month</span>
+                        <span class="info-box-number">$@ViewBag.costMonth</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="clearfix hidden-md-up"></div>
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box mb-3">
+                    <span class="info-box-icon bg-success elevation-1"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Year: @ViewBag.year</span>
+                        <span class="info-box-number">$@ViewBag.costYear</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box mb-3">
+                    <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Employee Number</span>
+                        <span class="info-box-number">@ViewBag.countEmployee</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header border-transparent">
+                        <h3 class="card-title">Stationery request pending approval</h3>
+                    </div>
+
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table m-0">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>ID Epl</th>
+                                        <th>Name</th>
+                                        <th>Quantity</th>
+                                        <th>Toatl Price</th>
+                                        <th>Date Create</th>
+                                        <th>Status</th>
+                                        <th>Tools</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td><a asp-action="Edit" asp-controller="RequestStationery" asp-route-id="@item.IdrequestStationery">@item.IdrequestStationery</a></td>
+                                            <td>@item.Idemployee</td>
+                                            <td>@item.IdstationerieNavigation.NameStationerie</td>
+                                            <td>@item.Quantity</td>
+                                            <td>$@(item.Quantity * item.IdstationerieNavigation.Price)</td>
+                                            <td>@String.Format("{0:yyyy/MM/dd}", item.DateCreate)</td>
+                                            <td>
+                                                @if (item.Status == 0)
+                                                {
+                                                    <span class="badge bg-warning">Pending</span>
+                                                }
+                                                else if (item.Status == 1)
+                                                {
+                                                    <span class="badge bg-info">Approved accounting department</span>
+                                                }
+                                                else if (item.Status == 2)
+                                                {
+                                                    <span class="badge bg-success">Approved company management board</span>
+                                                }
+                                                else if (item.Status == 3)
+                                                {
+
+                                                    <span class="badge bg-danger">Request canceled</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                <a style="color: green" asp-action="Edit" asp-controller="RequestStationery" asp-route-id="@item.IdrequestStationery" title="Update information"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
+                    <div class="card-footer clearfix">
+                        <a asp-action="Index" asp-controller="RequestStationery" class="btn btn-sm btn-secondary float-left">View All</a>
+                        <div class="card-footer clearfix">
+                            <ul class="pagination pagination-sm m-0 float-right">
+                                @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }),
+                                 new PagedListRenderOptions
+                                    {
+                                        LiElementClasses = new string[] { "page-item" },
+                                        PageClasses = new string[] { "page-link" }
+                                    }
+                                )
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header border-transparent">
+                        <h3 class="card-title">Successful request (@ViewBag.year/@ViewBag.month)</h3>
+                    </div>
+
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table m-0">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>ID Epl</th>
+                                        <th>Name</th>
+                                        <th>Toatl Price</th>
+                                        <th>Date Create</th>
+                                        <th>Tools</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in ViewBag.listMonth)
+                                    {
+                                        <tr>
+                                            <td><a asp-action="Edit" asp-controller="RequestStationery" asp-route-id="@item.IdrequestStationery">@item.IdrequestStationery</a></td>
+                                            <td>@item.Idemployee</td>
+                                            <td>@item.IdstationerieNavigation.NameStationerie</td>
+                                            <td>$@(item.Quantity * item.IdstationerieNavigation.Price)</td>
+                                            <td>@String.Format("{0:yyyy/MM/dd}", item.DateCreate)</td>
+                                            <td>
+                                                <a style="color: green" asp-action="Edit" asp-controller="RequestStationery" asp-route-id="@item.IdrequestStationery" title="Detail"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
+                    <div class="card-footer clearfix">
+                        <a asp-action="Index" asp-controller="RequestStationery" class="btn btn-sm btn-secondary float-right">View All</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Stationery new</h3>
+                    </div>
+
+                    <div class="card-body p-0">
+                        <ul class="products-list product-list-in-card pl-2 pr-2">
+                            @foreach (var item in ViewBag.listStationery)
+                            {
+                                <li class="item">
+                                    <div class="product-img">
+                                        <img src="~/stationeries/@item.Image" alt="@item.NameStationerie" class="img-size-50">
+                                    </div>
+                                    <div class="product-info">
+                                        <a class="product-title">
+                                            @item.NameStationerie
+                                            <span class="badge badge-danger float-right">New</span>
+                                        </a>
+                                        <span class="product-description">
+                                            $@item.Price / @item.UnitOfMeasure
+                                        </span>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+
+                    <div class="card-footer text-center">
+                        <a asp-action="INdex" asp-controller="Stationery" class="uppercase">View All Stationery</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

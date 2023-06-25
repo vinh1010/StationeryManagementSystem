@@ -1,0 +1,96 @@
+﻿@model X.PagedList.IPagedList<StationeryManagementSystem.Models.Feedbacks>
+@using X.PagedList.Mvc.Core;
+@{
+    ViewData["Title"] = "Index";
+}
+
+<section class="content" style="padding-top: 20px">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Feedback List</h3>
+                        <div class="card-tools">
+                            <form asp-action="Index" asp-controller="Feedback" method="GET">
+                                <div class="input-group input-group-sm" style="width: 350px;">
+                                    <input type="number" name="Search" class="form-control float-right" placeholder="Enter id employee">
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn btn-default">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <a class="btn btn-primary" asp-action="Create" asp-controller="Feedback">Send Feedback </a>
+                        @if (TempData["success"] != null)
+                        {
+                            <div class="alert alert-success" role="alert" style="margin-top:20px">
+                                @Html.Raw(TempData["success"])
+                            </div>
+                        }
+                        @if (TempData["eror"] != null)
+                        {
+                            <div class="alert alert-danger" role="alert" style="margin-top:20px">
+                                @Html.Raw(TempData["eror"])
+                            </div>
+                        }
+                        <table class="table table-bordered" style="margin-top: 20px">
+                            <thead>
+                                <tr>
+                                    <th>ID Feedback</th>
+                                    <th>ID Employee</th>
+                                    <th>Date Create</th>
+                                    <th>Status</th>
+                                    <th style="width: 8%">Tools</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var feedback in Model)
+                                {
+                                    <tr>
+                                        <td>@feedback.Idfeedback</td>
+                                        <td>@feedback.Idemployee</td>
+                                        <td>@String.Format("{0:yyyy/MM/dd}", feedback.DateCreate)</td>
+                                        <td>
+                                            @if (feedback.Status == 1)
+                                            {
+                                                <span class="badge bg-success">Show</span>
+                                            }
+                                            else
+                                            {
+
+                                                <span class="badge bg-danger">Hidden</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            <a style="color: green" asp-action="Detail" asp-controller="Feedback" asp-route-id="@feedback.Idfeedback" title="Update information"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                                            <a style="color: red;padding-left: 20px" asp-action="Delete" asp-controller="Feedback" asp-route-id="@feedback.Idfeedback" title="Delete stationery"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="card-footer clearfix">
+                        <ul class="pagination pagination-sm m-0 float-right">
+                            @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }),
+                             new PagedListRenderOptions
+                                {
+                                    LiElementClasses = new string[] { "page-item" },
+                                    PageClasses = new string[] { "page-link" }
+                                }
+                            )
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

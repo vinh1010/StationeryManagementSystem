@@ -1,0 +1,59 @@
+﻿@model StationeryManagementSystem.Models.Feedbacks
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "Create";
+}
+
+@section Scripts{
+    <script src="//cdn.ckeditor.com/4.19.1/full/ckeditor.js"></script>
+    <script>
+        $(document).ready(function () {
+            CKEDITOR.replace('txtContent');
+        })
+    </script>
+}
+
+<section class="content" style="padding-top: 20px">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Send feedback</h3>
+                    </div>
+
+                    <form asp-action="Create" asp-controller="Feedback" method="POST">
+                        <div class="card-body">
+                            <div class="form-group">
+                                @if (HttpContextAccessor.HttpContext.Session.GetInt32("idAccount") != null)
+                                {
+                                    <label for="exampleInputEmail1"> Name Employee: @HttpContextAccessor.HttpContext.Session.GetString("userName")</label>
+                                    <input type="hidden" asp-for="Idemployee" value="@HttpContextAccessor.HttpContext.Session.GetInt32("idAccount")">
+                                }
+                            </div>
+
+                            <div class="form-group">
+                                <label for="exampleInputEmail1"> Content</label>
+                                <textarea asp-for="Content" id="txtContent" class="form-control">Enter content</textarea>
+                                <p class="text-danger">@ViewBag.Content</p>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Status</label>
+                                <br>
+                                <input type="radio" asp-for="Status" value="1" checked>Show
+                                <input type="radio" asp-for="Status" value="0">Hidden
+                            </div>
+                        </div>
+
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

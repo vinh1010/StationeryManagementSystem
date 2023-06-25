@@ -1,0 +1,113 @@
+﻿@model X.PagedList.IPagedList<StationeryManagementSystem.Models.Stationeries>
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Mvc.Core;
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "Index";
+}
+
+<section class="content" style="padding-top: 20px">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Stationery List</h3>
+                        <div class="card-tools">
+                            <form asp-action="Index" asp-controller="Stationery" method="GET">
+                                <div class="input-group input-group-sm" style="width: 350px;">
+                                    <input type="text" name="Search" class="form-control float-right" placeholder="Enter name stationery">
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn btn-default">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        @if (HttpContextAccessor.HttpContext.Session.GetInt32("roleId") == 1 || HttpContextAccessor.HttpContext.Session.GetInt32("roleId") == 2 || HttpContextAccessor.HttpContext.Session.GetString("departmentId").Equals("DPD"))
+                        {
+                            <a class="btn btn-primary" asp-action="Create" asp-controller="Stationery">Add new Stationery </a>
+                        }
+                        @if (TempData["success"] != null)
+                        {
+                            <div class="alert alert-success" role="alert" style="margin-top:20px">
+                                @Html.Raw(TempData["success"])
+                            </div>
+                        }
+                        @if (TempData["eror"] != null)
+                        {
+                            <div class="alert alert-danger" role="alert" style="margin-top:20px">
+                                @Html.Raw(TempData["eror"])
+                            </div>
+                        }
+                        <table class="table table-bordered" style="margin-top: 20px">
+                            <thead>
+                                <tr>
+                                    <th>ID Stationery</th>
+                                    <th>Name Stationery</th>
+                                    <th width="10%">Image</th>
+                                    <th>Price</th>
+                                    <th>Unit Of Measure</th>
+                                    <th>Date Create</th>
+                                    <th>Status</th>
+                                    @if (HttpContextAccessor.HttpContext.Session.GetInt32("roleId") == 1 || HttpContextAccessor.HttpContext.Session.GetInt32("roleId") == 2 || HttpContextAccessor.HttpContext.Session.GetString("departmentId").Equals("DPD"))
+                                    {
+                                        <th style="width: 8%">Tools</th>
+                                    }
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var stationery in Model)
+                                {
+                                    <tr>
+                                        <td>@stationery.Idstationerie</td>
+                                        <td>@stationery.NameStationerie</td>
+                                        <td><img src="~/stationeries/@stationery.Image" alt="@stationery.NameStationerie" width="60%"></td>
+                                        <td>@stationery.Price $</td>
+                                        <td>@stationery.UnitOfMeasure</td>
+                                        <td>@String.Format("{0:yyyy/MM/dd}", stationery.DateCreate)</td>
+                                        <td>
+                                            @if (stationery.Status == 1)
+                                            {
+                                                <span class="badge bg-success">Show</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-danger">Hidden</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (HttpContextAccessor.HttpContext.Session.GetInt32("roleId") == 1 || HttpContextAccessor.HttpContext.Session.GetInt32("roleId") == 2 || HttpContextAccessor.HttpContext.Session.GetString("departmentId").Equals("DPD"))
+                                            {
+                                                <a style="color: green" asp-action="Edit" asp-controller="Stationery" asp-route-id="@stationery.Idstationerie" title="Update information"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                                                <a style="color: red;padding-left: 20px" asp-action="Delete" asp-controller="Stationery" asp-route-id="@stationery.Idstationerie" title="Delete stationery"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="card-footer clearfix">
+                        <ul class="pagination pagination-sm m-0 float-right">
+                            @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }),
+                             new PagedListRenderOptions
+                                {
+                                    LiElementClasses = new string[] { "page-item" },
+                                    PageClasses = new string[] { "page-link" }
+                                }
+                            )
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

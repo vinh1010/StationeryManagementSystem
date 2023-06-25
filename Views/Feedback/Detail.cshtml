@@ -1,0 +1,43 @@
+﻿@model StationeryManagementSystem.Models.Feedbacks
+@{
+    ViewData["Title"] = "Detail";
+}
+
+<section class="content" style="padding-top: 20px">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Detail Feedback</h3>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1"> Id Feedback: @Model.Idfeedback</label>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleInputEmail1"> Id Employee: @Model.Idemployee</label>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Date Create: @String.Format("{0:yyyy/MM/dd}", Model.DateCreate)</label>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Conten:</label>
+                            <br>
+                            @Html.Raw(Model.Content)
+                        </div>
+
+                        <div class="card-footer">
+                            <a class="btn btn-primary" asp-action="Index" asp-controller="Feedback">Go to list</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

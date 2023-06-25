@@ -1,0 +1,480 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@if (@HttpContextAccessor.HttpContext.Session.GetString("userName") == null)
+{
+    
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AdminLTE 3 | Dashboard 2</title>
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="~/admin/plugins/fontawesome-free/css/all.min.css">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="~/admin/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/admin/dist/css/adminlte.min.css">
+</head>
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+    <div class="wrapper">
+
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand navbar-dark">
+            <!-- Left navbar links -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a asp-action="Index" asp-controller="Home" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a asp-action="Logout" asp-controller="Account" class="nav-link">Logout</a>
+                </li>
+            </ul>
+
+            <!-- Right navbar links -->
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a class="nav-link">Welcome: @HttpContextAccessor.HttpContext.Session.GetString("userName") -- Department: @HttpContextAccessor.HttpContext.Session.GetString("departmentName")</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+                        <i class="fas fa-expand-arrows-alt"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!-- /.navbar -->
+        <!-- Main Sidebar Container -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <!-- Brand Logo -->
+            <a asp-action="Index" asp-controller="Home" class="brand-link">
+                <img src="~/admin/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                <span class="brand-text font-weight-light">HMT Technologies</span>
+            </a>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Sidebar user panel (optional) -->
+                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                    <div class="image">
+                        <img src="https://cdn-icons-png.flaticon.com/512/219/219983.png" class="img-circle elevation-2" alt="User Image">
+                    </div>
+                    <div class="info">
+                        <a href="#" class="d-block">@HttpContextAccessor.HttpContext.Session.GetString("userName")</a>
+                    </div>
+                </div>
+
+                <!-- Sidebar Menu -->
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        @if (HttpContextAccessor.HttpContext.Session.GetInt32("roleId") == 1)
+                        {
+                            <li class="nav-item">
+                                <a href="#" class="nav-link active">
+                                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                                    <p style="font-size: 14px">
+                                        Position Management
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a asp-action="Index" asp-controller="Role" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Position list</p>
+                                        </a>
+                                        <a asp-action="Create" asp-controller="Role" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Add new Position</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="#" class="nav-link active">
+                                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                                    <p style="font-size: 14px">
+                                        Department Management
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a asp-action="Index" asp-controller="Department" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Department list</p>
+                                        </a>
+                                        <a asp-action="Create" asp-controller="Department" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Add new Department</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="#" class="nav-link active">
+                                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                                    <p style="font-size: 14px">
+                                        Employee Management
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a asp-action="Index" asp-controller="Employee" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Employee list</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a asp-action="Create" asp-controller="Employee" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Add new Employee</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="#" class="nav-link active">
+                                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                                    <p style="font-size: 14px">
+                                        Stationery Management
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a asp-action="Index" asp-controller="Stationery" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Stationery List</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a asp-action="Create" asp-controller="Stationery" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Add new Stationery</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="#" class="nav-link active">
+                                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                                    <p style="font-size: 14px">
+                                        Request Stationery
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a asp-action="Index" asp-controller="RequestStationery" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Stationery request list</p>
+                                        </a>
+                                        <a asp-action="Create" asp-controller="RequestStationery" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Send stationery request</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="#" class="nav-link active">
+                                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                                    <p style="font-size: 14px">
+                                        Feedback Management
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a asp-action="Index" asp-controller="Feedback" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Feedback list</p>
+                                        </a>
+                                        <a asp-action="Create" asp-controller="Feedback" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Send Feedback</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                        @if (HttpContextAccessor.HttpContext.Session.GetInt32("roleId") == 2)
+                        {
+                            <li class="nav-item">
+                                <a href="#" class="nav-link active">
+                                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                                    <p style="font-size: 14px">
+                                        Department Management
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a asp-action="Index" asp-controller="Department" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Department list</p>
+                                        </a>
+                                        <a asp-action="Create" asp-controller="Department" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Add new Department</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="#" class="nav-link active">
+                                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                                    <p style="font-size: 14px">
+                                        Employee Management
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a asp-action="Index" asp-controller="Employee" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Employee list</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a asp-action="Create" asp-controller="Employee" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Add new Employee</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="#" class="nav-link active">
+                                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                                    <p style="font-size: 14px">
+                                        Request Stationery
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a asp-action="Index" asp-controller="RequestStationery" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Stationery request list</p>
+                                        </a>
+                                        <a asp-action="Create" asp-controller="RequestStationery" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Send stationery request</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="#" class="nav-link active">
+                                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                                    <p style="font-size: 14px">
+                                        Feedback Management
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a asp-action="Create" asp-controller="Feedback" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Send Feedback</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                        @if (HttpContextAccessor.HttpContext.Session.GetInt32("roleId") == 3)
+                        {
+                            <li class="nav-item">
+                                <a href="#" class="nav-link active">
+                                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                                    <p style="font-size: 14px">
+                                        Employee Management
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a asp-action="Index" asp-controller="Employee" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Employee list</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="#" class="nav-link active">
+                                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                                    <p style="font-size: 14px">
+                                        Stationery Management
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a asp-action="Index" asp-controller="Stationery" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Stationery List</p>
+                                        </a>
+                                    </li>
+                                    @if (HttpContextAccessor.HttpContext.Session.GetString("departmentId").Equals("DPD"))
+                                    {
+                                        <li class="nav-item">
+                                            <a asp-action="Create" asp-controller="Stationery" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Add new Stationery</p>
+                                            </a>
+                                        </li>
+                                    }
+                                </ul>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="#" class="nav-link active">
+                                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                                    <p style="font-size: 14px">
+                                        Request Stationery
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a asp-action="Index" asp-controller="RequestStationery" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Stationery request list</p>
+                                        </a>
+                                        <a asp-action="Create" asp-controller="RequestStationery" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Send stationery request</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="#" class="nav-link active">
+                                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                                    <p style="font-size: 14px">
+                                        Feedback Management
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a asp-action="Create" asp-controller="Feedback" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Send Feedback</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                        @if (@HttpContextAccessor.HttpContext.Session.GetInt32("roleId") == 4)
+                        {
+                            <li class="nav-item">
+                                <a href="#" class="nav-link active">
+                                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                                    <p style="font-size: 14px">
+                                        Request Stationery
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a asp-action="Index" asp-controller="RequestStationery" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Stationery request list</p>
+                                        </a>
+                                        <a asp-action="Create" asp-controller="RequestStationery" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Send stationery request</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="#" class="nav-link active">
+                                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                                    <p style="font-size: 14px">
+                                        Feedback Management
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a asp-action="Create" asp-controller="Feedback" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Send Feedback</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+                <!-- /.sidebar-menu -->
+            </div>
+            <!-- /.sidebar -->
+        </aside>
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            @RenderBody()
+        </div>
+        <!-- /.content-wrapper -->
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+        </aside>
+        <!-- /.control-sidebar -->
+        <!-- Main Footer -->
+        <footer class="main-footer">
+            <strong>Copyright &copy; 2014-2021 .</strong>
+            All rights reserved.
+            <div class="float-right d-none d-sm-inline-block">
+                <b>Version</b> 3.2.0
+            </div>
+        </footer>
+    </div>
+    <!-- ./wrapper -->
+    <!-- REQUIRED SCRIPTS -->
+    <!-- jQuery -->
+    <script src="~/admin/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="~/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- overlayScrollbars -->
+    <script src="~/admin/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/admin/dist/js/adminlte.js"></script>
+
+    <!-- PAGE ~/admin/plugins -->
+    <!-- jQuery Mapael -->
+    <script src="~/admin/plugins/jquery-mousewheel/jquery.mousewheel.js"></script>
+    <script src="~/admin/plugins/raphael/raphael.min.js"></script>
+    <script src="~/admin/plugins/jquery-mapael/jquery.mapael.min.js"></script>
+    <script src="~/admin/plugins/jquery-mapael/maps/usa_states.min.js"></script>
+    <script src="~/sweetalert/sweetalert2@11.js"></script>
+    <!-- ChartJS -->
+    <script src="~/admin/plugins/chart.js/Chart.min.js"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

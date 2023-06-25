@@ -1,0 +1,42 @@
+﻿@model StationeryManagementSystem.Models.Roles
+@{
+    ViewData["Title"] = "Create";
+}
+
+<section class="content" style="padding-top: 20px">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Add new Position</h3>
+                    </div>
+
+                    <form asp-action="Create" asp-controller="Role" method="POST">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1"> Name position</label>
+                                <input type="text" asp-for="RoleName" class="form-control" id="exampleInputEmail1" placeholder="Enter name position">
+                                <b class="text-danger">@ViewBag.checkName</b>
+                                <b class="text-danger">@ViewBag.checkNameNull</b>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Status</label>
+                                <br>
+                                <input type="radio" asp-for="Status" value="1" checked>Show
+                                <input type="radio" asp-for="Status" value="0">Hidden
+                            </div>
+                        </div>
+
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+
+                            <a asp-controller="Role" asp-action="Index" class="btn btn-primary float-right">Go to list</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,119 @@
+﻿@model X.PagedList.IPagedList<StationeryManagementSystem.Models.RequestStationery>
+@using X.PagedList.Mvc.Core;
+@{
+    ViewData["Title"] = "Index";
+}
+
+<section class="content" style="padding-top: 20px">
+    
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Request Stationery List</h3>
+                        <form asp-action="Index" asp-controller="RequestStationery" method="GET">
+                            <div class="card-tools float-right">
+                                <div class="input-group input-group-sm">
+                                    <b>From:</b> <input style="margin-left: 5px" type="date" name="From" class="form-control float-right">
+                                    <b style="margin-left: 10px">To:</b> <input style="margin-left: 5px" type="date" name="To" class="form-control float-right">
+                                    <div class="input-group input-group-sm" style="width: 350px;margin-left: 10px">
+                                        <input type="number" name="Search" class="form-control float-right" placeholder="Enter id employee">
+                                    </div>
+                                    <div class="input-group-append">
+                                        <button style="margin-left: 10px" type="submit" class="btn btn-default">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="card-body">
+                        <a class="btn btn-primary" asp-action="Create" asp-controller="RequestStationery">Send Request Stationery </a>
+                            
+                        @if (TempData["success"] != null)
+                        {
+                            <div class="alert alert-success" role="alert" style="margin-top:20px">
+                                @Html.Raw(TempData["success"])
+                            </div>
+                        }
+                        @if (TempData["eror"] != null)
+                        {
+                            <div class="alert alert-danger" role="alert" style="margin-top:20px">
+                                @Html.Raw(TempData["eror"])
+                            </div>
+                        }
+                        <table class="table table-bordered" style="margin-top: 20px">
+                            <thead>
+                                <tr>
+                                    <th title="ID Request Stationery">ID</th>
+                                    <th title="ID Employee">ID Epl</th>
+                                    <th>Name Stationery</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                    <th>Toatl Price</th>
+                                    <th>Date Create</th>
+                                    <th>Status</th>
+                                    <th style="width: 8%">Tools</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var rs in Model)
+                                {
+                                    <tr>
+                                        <td>@rs.IdrequestStationery</td>
+                                        <td>@rs.Idemployee</td>
+                                        <td>@rs.IdstationerieNavigation.NameStationerie</td>
+                                        <td>@rs.Quantity @rs.IdstationerieNavigation.UnitOfMeasure</td>
+                                        <td>$@rs.IdstationerieNavigation.Price</td>
+                                        <td>$@(rs.IdstationerieNavigation.Price * rs.Quantity)</td>
+                                        <td>@String.Format("{0:yyyy/MM/dd}", rs.DateCreate)</td>
+                                        <td>
+                                            @if (rs.Status == 0)
+                                            {
+                                                <span class="badge bg-warning">Pending</span>
+                                            }
+                                            else if (rs.Status == 1)
+                                            {
+                                                <span class="badge bg-info">Approved accounting department</span>
+                                            }
+                                            else if (rs.Status == 2)
+                                            {
+                                                <span class="badge bg-success">Approved company management board</span>
+                                            }
+                                            else if (rs.Status == 3)
+                                            {
+
+                                                <span class="badge bg-danger">Request canceled</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            <a style="color: green" asp-action="Edit" asp-controller="RequestStationery" asp-route-id="@rs.IdrequestStationery" title="Update information"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                                            <a style="color: red;padding-left: 20px" asp-action="Delete" asp-controller="RequestStationery" asp-route-id="@rs.IdrequestStationery" title="Delete stationery"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="card-footer clearfix">
+                        <ul class="pagination pagination-sm m-0 float-right">
+                            @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }),
+                                new PagedListRenderOptions
+                                {
+                                    LiElementClasses = new string[] { "page-item" },
+                                    PageClasses = new string[] { "page-link" }
+                                }
+                            )
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
